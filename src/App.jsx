@@ -21,21 +21,32 @@ function App() {
 
     axios
       .get('https://pokeapi.co/api/v2/pokemon?limit=' + POKEMON_COUNT)
-      .then(function (response) {
+      .then(async function (response) {
         const pokemonUrls = response.data.results.map(function (pokemon) {
           return pokemon.url
         })
 
-        const requests = pokemonUrls.map(function (url) {
-          return axios.get(url)
-        })
+        const pokemonData = []
+        const batchSize = 20
 
-        return Promise.all(requests)
-      })
-      .then(function (responses) {
-        const pokemonData = responses.map(function (response) {
-          return response.data
-        })
+        for (let i = 0; i < pokemonUrls.length; i += batchSize) {
+          const batch = pokemonUrls.slice(i, i + batchSize)
+
+          const responses = await Promise.all(
+            batch.map(function (url) {
+              return axios.get(url).catch(function (error) {
+                console.log('Failed to load:', url)
+                return null
+              })
+            })
+          )
+
+          responses.forEach(function (response) {
+            if (response !== null) {
+              pokemonData.push(response.data)
+            }
+          })
+        }
 
         setPokemonList(pokemonData)
         setIsLoading(false)
@@ -243,7 +254,10 @@ function App() {
                           const abilityName = abilityInfo.ability.name
 
                           return (
-                            <span key={abilityName} className="ability-badge">
+                            <span
+                              key={abilityName}
+                              className="ability-badge"
+                            >
                               {abilityName}
                             </span>
                           )
