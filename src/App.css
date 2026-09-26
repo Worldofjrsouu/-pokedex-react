@@ -554,3 +554,56 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #8a8a8f;
 }
+
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .nav-brand {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .brand-text {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    flex: 1;
+    max-width: 160px;
+    padding: 10px 15px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 15px;
+    gap: 12px;
+  }
+
+  .brand-text {
+    font-size: 18px;
+  }
+
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-btn {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+}
